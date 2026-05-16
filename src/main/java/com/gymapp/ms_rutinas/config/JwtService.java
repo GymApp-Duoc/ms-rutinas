@@ -2,11 +2,11 @@ package com.gymapp.ms_rutinas.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
-import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -16,33 +16,39 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String extraerUsername(String token) {
-        return extraerClaim(token, Claims::getSubject);
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    public <T> T extraerClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extraerTodosLosClaims(token);
+    public boolean isTokenValid(String token) {
+        return !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims extraerTodosLosClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parser()
+                .verifyWith(getSignInKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
+    private SecretKey getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
-    public boolean esTokenValido(String token) {
-        try {
-            return !extraerClaim(token, Claims::getExpiration).before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
+

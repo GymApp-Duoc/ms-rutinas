@@ -1,0 +1,13 @@
+package com.gymapp.ms_rutinas.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import java.util.Map;
+
+@FeignClient(name = "ms-gamificacion") // Apunta al servicio encargado de los puntos y logros
+public interface GamificacionClient {
+
+    @PostMapping("/api/gamificacion/eventos")
+    void enviarEvento(@RequestBody Map<String, Object> evento);
+}
