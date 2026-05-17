@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     @Bean
-    @LoadBalanced // Permite que RestTemplate entienda los nombres de Eureka (ej: http://ms-miembros)
+    @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

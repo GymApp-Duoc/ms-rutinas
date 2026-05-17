@@ -27,7 +27,7 @@ public class Rutina {
     private String nombre;
 
     @Column(nullable = false, length = 50)
-    private String nivel; // Ejemplo: PRINCIPIANTE, INTERMEDIO, AVANZADO
+    private String nivel;
 
     @Column(name = "fecha_asignacion", nullable = false)
     private LocalDate fechaAsignacion;

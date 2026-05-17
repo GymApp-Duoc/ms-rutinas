@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Map;
 
-@FeignClient(name = "ms-notificaciones") // Apunta al servicio encargado de enviar alertas
+@FeignClient(name = "ms-notificaciones")
 public interface NotificacionClient {
 
     @PostMapping("/api/notificaciones")
