@@ -58,7 +58,6 @@ public class RutinaServiceImpl implements RutinaService {
     public RutinaResponseDTO crear(RutinaRequestDTO dto) {
         log.info("[RUTINA] Intentando asignar nueva rutina para miembro ID: {}", dto.getMiembroId());
 
-        // LÓGICA DE NEGOCIO ROBUSTA: Validar existencia síncrona mediante Feign
         try {
             miembroClient.obtenerPorId(dto.getMiembroId());
         } catch (FeignException.NotFound e) {
@@ -108,13 +107,12 @@ public class RutinaServiceImpl implements RutinaService {
     public void eliminar(Long id) {
         Rutina rutina = repository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Rutina no encontrada."));
-        rutina.setActivo(false); // Eliminación lógica segura
+        rutina.setActivo(false);
         repository.save(rutina);
         log.info("[RUTINA] Rutina ID {} dada de baja lógicamente.", id);
     }
 
     private void emitirEventosIntegracion(Rutina rutina) {
-        // Gamificación: Otorgar XP por recibir un nuevo plan
         try {
             Map<String, Object> evento = new HashMap<>();
             evento.put("miembroId", rutina.getMiembroId());
@@ -125,7 +123,6 @@ public class RutinaServiceImpl implements RutinaService {
             log.warn("[INTEGRACION] No se pudo conectar con ms-gamificacion: {}", e.getMessage());
         }
 
-        // Notificación: Avisar al miembro que su entrenador subió un plan
         try {
             Map<String, Object> noti = new HashMap<>();
             noti.put("miembroId", rutina.getMiembroId());

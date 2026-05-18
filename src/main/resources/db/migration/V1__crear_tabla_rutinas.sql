@@ -1,4 +1,4 @@
--- Creación de la tabla rutinas
+
 CREATE TABLE rutinas (
                          id BIGINT AUTO_INCREMENT PRIMARY KEY,
                          miembro_id BIGINT NOT NULL,
