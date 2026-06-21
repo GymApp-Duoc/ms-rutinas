@@ -1,5 +1,6 @@
 package com.gymapp.ms_rutinas.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Datos de respuesta de una rutina de entrenamiento")
 public class RutinaResponseDTO {
     private Long id;
     private Long miembroId;
@@ -20,4 +22,3 @@ public class RutinaResponseDTO {
     private Integer duracionSemanas;
     private String detalleEjercicios;
 }
-
