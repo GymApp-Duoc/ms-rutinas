@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Map;
 
-@FeignClient(name = "ms-gamificacion") // Apunta al servicio encargado de los puntos y logros
+@FeignClient(name = "ms-gamificacion")
 public interface GamificacionClient {
 
     @PostMapping("/api/gamificacion/eventos")
